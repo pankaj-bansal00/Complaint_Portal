@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Submitted Successfully</title>
+    <link rel="stylesheet" href="/static/complaint.css">
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-card">
+            <h1>🎉 Complaint Submitted!</h1>
+            <p>Thank you for submitting your complaint.</p>
+            <p>Your tracking ID is: {{ track_id }}</p>
+            <p>You can use the tracking ID to check the status of your complaint at any time.</p>
+            <a href="{% url 'trackid' %}" class="track-btn">Track Complaint</a>
+            <a href="{% url 'home' %}" class="home-btn">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

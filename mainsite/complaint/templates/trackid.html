@@ -48,6 +48,7 @@ td {
             <button type="submit">Find Complaint</button>
         </form>
     </div>
+    {% if complaint.track_id %}
     <div class="cmpdetails">
         <table border="1">
             <tr>
@@ -61,7 +62,7 @@ td {
                 <td>{{complaint.status}}</td>
             </tr>
         </table>
-        
     </div>
+    {% endif %}
 </body>
 </html>

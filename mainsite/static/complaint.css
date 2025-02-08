@@ -1,0 +1,77 @@
+/* Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Success Page Container */
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f4f6;
+}
+
+/* Success Card */
+.success-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px 30px;
+    max-width: 400px;
+    width: 90%;
+}
+
+/* Heading */
+.success-card h1 {
+    font-size: 1.8rem;
+    color: #4caf50;
+    margin-bottom: 15px;
+}
+
+/* Description Text */
+.success-card p {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Buttons */
+.success-card .track-btn,
+.success-card .home-btn {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 5px;
+}
+
+.success-card .track-btn {
+    background-color: #4caf50;
+    color: #fff;
+    border: 1px solid #4caf50;
+}
+
+.success-card .track-btn:hover {
+    background-color: #45a049;
+    color: #fff;
+}
+
+.success-card .home-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.success-card .home-btn:hover {
+    background-color: #e4e4e4;
+    color: #000;
+}

@@ -28,6 +28,8 @@ class Complaint(models.Model):
     ]
 
     TRACK_ID_PREFIX = "CMP"
+    TRACK_ID_LENGTH = 8
+    
 
     track_id = models.CharField(max_length=20, unique=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -40,11 +42,11 @@ class Complaint(models.Model):
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('resolved', 'Resolved')], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
+
     def save(self, *args, **kwargs):
-        """ Generate a unique Track ID for each complaint """
         if not self.track_id:
-            self.track_id = f"{self.TRACK_ID_PREFIX}-{uuid.uuid4().hex[:8].upper()}"
+            self.track_id = str(uuid.uuid4().hex[:self.TRACK_ID_LENGTH]).upper()
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.track_id} - {self.complaint_title}"
+        return f"{self.name} ({self.track_id})"
