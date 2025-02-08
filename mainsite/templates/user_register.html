@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="/static/user/registration.css">
+    <style>
+        #resend-otp-button.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    {% include "nav.html" %}
+
+    {% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+    <div class="container">
+        <h2>Register</h2>
+        <form id="registration-form" action="{% url 'user_register' %}" method="POST">
+            {% csrf_token %}
+            
+            <input type="text" placeholder="Full Name" required name="name">
+            <input type="email" placeholder="Email" name="email">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" name="phone" placeholder="Phone Number" required id="phone-input">
+                <button type="button" id="send-otp-button" style="height:35px;">Send OTP</button>
+                <button type="button" id="resend-otp-button" style="height:35px; display: none;">Resend OTP</button>
+            </div>
+            <div id="otp-section" style="display: none; margin-top: 10px;">
+                <input type="text" name="otp" placeholder="Enter OTP" required name="otp">
+            </div>
+            <p id="countdown-timer" style="color: red; display: none;"></p>
+            <button type="submit" id="submit-button" style="height:35px; margin-top: 10px; display: none;">Register</button>
+            <br>
+   
+        </form>
+
+        <script>
+            const sendOtpButton = document.getElementById("send-otp-button");
+            const resendOtpButton = document.getElementById("resend-otp-button");
+            const countdownTimer = document.getElementById("countdown-timer");
+            const submitButton = document.getElementById("submit-button");
+            const otpSection = document.getElementById("otp-section");
+
+            let countdownInterval;
+
+            function sendOtp() {
+                const phone = document.getElementById("phone-input").value;
+
+                fetch("{% url 'send_otp' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({ phone: phone })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        otpSection.style.display = "block";
+                        submitButton.style.display = "block";
+                        
+                        // Start 2-minute countdown
+                        startCountdown(120);
+
+                        // Show Resend button and hide Send button
+                        sendOtpButton.style.display = "none";
+                        resendOtpButton.style.display = "inline-block";
+                        resendOtpButton.classList.add("disabled");
+                    } else {
+                        alert("Error: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending OTP:', error);
+                    alert("Something went wrong. Please try again.");
+                });
+            }
+
+            sendOtpButton.addEventListener("click", sendOtp);
+
+            resendOtpButton.addEventListener("click", function () {
+                if (!resendOtpButton.classList.contains("disabled")) {
+                    sendOtp();
+                }
+            });
+
+            function startCountdown(seconds) {
+                let remainingTime = seconds;
+
+                countdownTimer.style.display = "block";
+                updateTimerDisplay(remainingTime);
+
+                countdownInterval = setInterval(() => {
+                    remainingTime--;
+                    updateTimerDisplay(remainingTime);
+
+                    if (remainingTime <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownTimer.style.display = "none";
+                        resendOtpButton.classList.remove("disabled");
+                    }
+                }, 1000);
+            }
+
+            function updateTimerDisplay(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                countdownTimer.textContent = `You can resend OTP in ${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+        </script>
+    </div>
+</body>
+</html>

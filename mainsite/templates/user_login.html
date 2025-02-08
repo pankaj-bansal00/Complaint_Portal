@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <link rel="stylesheet" href="/static/user/login.css">
+</head>
+<body>
+    
+    <div class="container">
+        <h2>Login</h2>
+        <form action="{% url 'user_login' %}" method="POST">
+            {% csrf_token %}
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="tel" name="phone" placeholder="Phone Number" required>
+                <button type="button" onclick="send_otp_via_sms()" style="height: 30px; width: 150px;   ">Send OTP</button>
+            </div>
+            <input type="text" name="otp" placeholder="Enter OTP" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="acc">
+            <p>Don't have an account? <a href="{% url 'user_register' %}">Register</a></p>
+        </div>
+    </div>
+  
+    <script>
+       
+    </script>
+</body>
+</html>

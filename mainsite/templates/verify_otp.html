@@ -1,0 +1,25 @@
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+
+<form method="POST" action="{% url 'verify_otp' %}">
+    {% csrf_token %}
+
+    <input type="text" name="otp" placeholder="Enter OTP" >
+    <button type="submit">Verify OTP</button>
+</form>
+
+{% if resend_otp %}
+<form method="POST" action="{% url 'resend_otp' %}">
+    {% csrf_token %}
+    <input type="hidden" name="phone" value="{{ phone }}">
+    <button type="submit">Resend OTP</button>
+</form>
+{% endif %}
+
+<button type="submit">Register</button>
+</form>
+</div>

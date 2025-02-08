@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/complaintform.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <h2>Submit a Complaint</h2>
+
+    <form method="POST" action="{% url 'complaint_form' %}">
+        {% csrf_token %}
+    
+        <label>Name:</label>
+        <input type="text" value="{{ user.name }}" readonly>
+    
+        <label>Phone Number:</label>
+        <input type="text" value="{{ user.phone }}" readonly>
+    
+        <label>Customer Type:</label>
+        <select name="customer_type" required>
+            <option value="existing">Existing Customer</option>
+            <option value="new">New Customer</option>
+        </select>
+    
+        <label>Bank Name:</label>
+        <select name="bank_name" required>
+            <option value="hdfc">HDFC Bank</option>
+            <option value="sbi">State Bank of India</option>
+            <option value="icici">ICICI Bank</option>
+            <option value="axis">Axis Bank</option>
+            <option value="pnb">Punjab National Bank</option>
+        </select>
+    
+        <label>Account Number:</label>
+        <input type="text" name="account_number" required>
+
+            <label for="branch">Select Branch</label>
+            <select id="branch" name="branch">
+                <option>Suchan (0042)</option>
+                <option>Branch 2</option>
+            </select>
+    
+            <label for="debitCard">Debit Card Number</label>
+            <input type="number" id="debitCard" name="debitCard">
+
+            <label for="category">Category of Complaints</label>
+            <select id="category" name="category">
+                <option>NEFT/RTGS</option>
+                <option>Other</option>
+            </select>
+    
+        <label>Complaint Type:</label>
+        <select name="complaint_type" required>
+            <option value="transaction">Transaction Issue</option>
+            <option value="account">Account Problem</option>
+            <option value="service">Service Complaint</option>
+            <option value="fraud">Fraud Report</option>
+            <option value="other">Other</option>
+        </select>
+    
+        <label>Complaint Title:</label>
+        <input type="text" name="complaint_title" required>
+    
+        <label>Complaint Description (Max 500 words):</label>
+        <textarea name="complaint_description" rows="5" maxlength="500" required></textarea>
+    
+        <button type="submit">Submit Complaint</button>
+    </form>
+    
+    
+    
+</body>
+</html>

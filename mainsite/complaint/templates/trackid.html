@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/user/login.css">
+    <style>
+        table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+td {
+    color: #333;
+}
+
+    </style>
+</head>
+<body>
+    {% include "nav.html" %}
+
+    <div class="container">
+        <h2>Find Your Complaint</h2>
+        <form method="post" action="{% url 'trackid' %}">
+            {% csrf_token %}
+            <input type="text" placeholder="Enter Complaint ID" required name="track_id">
+            <button type="submit">Find Complaint</button>
+        </form>
+    </div>
+    <div class="cmpdetails">
+        <table border="1">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>{{complaint.complaint_title}}</td>
+                <td>{{complaint.complaint_description}}</td>
+                <td>{{complaint.status}}</td>
+            </tr>
+        </table>
+        
+    </div>
+</body>
+</html>
