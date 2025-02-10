@@ -10,11 +10,12 @@ import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Complaint
-from user.models import User  # Ensure correct import
-
+from user.models import User 
+from django.views.decorators.csrf import csrf_exempt
 import random
 import string
 from django.utils.timezone import now
+from .utils import send_trackid
 # Helper function to generate a tracking ID
 def generate_tracking_id():
     """Generate a unique tracking ID."""
@@ -50,19 +51,15 @@ def complaint_form(request):
             complaint_description=complaint_description,
             track_id=track_id  # Save the generated tracking ID
         )
-
+        print(complaint.track_id)
         # Send SMS with the tracking ID
-        track_id_message = (
-            f"Dear {user.name}, your complaint has been successfully registered. "
-            f"Your Tracking ID is {track_id}. You can use this ID to track your complaint."
-        )
-        sendd_sms(track_id_message)
 
+        send_trackid(complaint.track_id,complaint.user.phone)
         # Notify user with a success message
         messages.success(
             request, f"Your complaint has been submitted! A tracking ID has been sent to your registered phone number."
         )
-        return redirect('complaint_success')  # Redirect to a success page
+        return redirect('complaint_success', track_id=complaint.track_id)  # Redirect to a success page
 
     return render(request, "complaint_form.html", {"user": user})
 
@@ -81,13 +78,16 @@ def trackid(request):
             return redirect("trackid")
     return render(request, 'trackid.html')
 
-def complaint_success(request):
-    return render(request, 'complaint_success.html')
+def complaint_success(request, track_id):
+    return render(request, 'complaint_success.html', {'track_id': track_id})
+
+
+
 
 def sendd_sms(request):
     try:
         # Load request data
-        data = json.loads(request.body)
+        data = json.loads(request.body.decode('utf-8'))  # Decode and parse JSON
         phone_number = data.get('phone')
         
         if not phone_number:
@@ -101,13 +101,10 @@ def sendd_sms(request):
         userid = os.getenv('USERID')
         sender = os.getenv('SENDER')
         api_key = os.getenv('API_KEY')
-        template_id = os.getenv("TEMPLATE_ID")
+        track_template_id = os.getenv("TRACK_TEMPLATE_ID")
 
         # Message to send
-        message_body = (f"""Dear Customer, your Customer Complaint Form Tracking ID is {trackid}. "
-                         "This Tracking ID. Do not share Tracking ID with anyone "
-                         "for security reasons. "
-                         "Thanks, The Sirsa Central Cooperative Bank Limited.""")
+        message_body = (f"""Dear Customer, your complaint id {trackid} has been registered. Please track the complaint post the two days for the resolution. Regards-The Sirsa central Coop Bank Ltd.""")
         
         # API URL
         url = 'https://www.proactivesms.in/sendsms.jsp'
@@ -119,13 +116,13 @@ def sendd_sms(request):
             'senderid': sender,
             'mobiles': phone_number,
             'sms': message_body,
-            'tempid': template_id
+            'tempid': track_template_id
         }
 
         # Create or update OTP record
         trackid, created = Complaint.objects.get_or_create(phone=phone_number)
         if created:
-            print("New Trackid  record created.")
+            print("New Trackid record created.")
         else:
             print("Trackid record updated.")
 
@@ -142,5 +139,12 @@ def sendd_sms(request):
     
     except Exception as e:
         print(f"Exception occurred: {e}")
-        traceback.print_exc()
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@csrf_exempt  # If you're not using CSRF protection
+def send_sms_view(request):
+    if request.method == 'POST':
+        return sendd_sms(request)
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405) 

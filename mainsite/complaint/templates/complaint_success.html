@@ -11,7 +11,7 @@
         <div class="success-card">
             <h1>🎉 Complaint Submitted!</h1>
             <p>Thank you for submitting your complaint.</p>
-            <p>Your tracking ID is: {{ track_id }}</p>
+            <p>Your complaint has been recorded with Track ID: <strong>{{ track_id }}</strong></p>
             <p>You can use the tracking ID to check the status of your complaint at any time.</p>
             <a href="{% url 'trackid' %}" class="track-btn">Track Complaint</a>
             <a href="{% url 'home' %}" class="home-btn">Back to Home</a>

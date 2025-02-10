@@ -27,7 +27,7 @@ class Complaint(models.Model):
         ('other', 'Other'),
     ]
 
-    TRACK_ID_PREFIX = "CMP"
+    TRACK_ID_PREFIX = "SIRSAB"
     TRACK_ID_LENGTH = 8
     
 
@@ -49,4 +49,4 @@ class Complaint(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} ({self.track_id})"
+        return f"{self.complaint_title} ({self.track_id})"
