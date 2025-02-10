@@ -1,17 +1,14 @@
 /* General Styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background: linear-gradient(to right, #75bf86, #98d18c);
     margin: 0;
 }
 
 /* Login Container */
 .login-container {
     background: white;
+    margin: 50px auto;
     padding: 30px;
     width: 350px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -45,7 +42,7 @@ input:focus {
 
 /* Login Button */
 button {
-    background: #2575fc;
+    background-color: #4CAF50;
     color: white;
     padding: 12px;
     width: 100%;

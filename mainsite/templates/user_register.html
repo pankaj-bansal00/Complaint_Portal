@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
     <link rel="stylesheet" href="/static/user/registration.css">
-    <style>
-        #resend-otp-button.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-    </style>
 </head>
 <body>
-    {% include "nav.html" %}
+
 
     {% if messages %}
     {% for message in messages %}
         <p>{{ message }}</p>
     {% endfor %}
     {% endif %}
+
+    {% include "nav.html" %}
     <div class="container">
         <h2>Register</h2>
         <form id="registration-form" action="{% url 'user_register' %}" method="POST">

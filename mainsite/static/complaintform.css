@@ -7,10 +7,10 @@
 }
 
 body {
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    background: linear-gradient(to right, #75bf86, #98d18c);
     color: #333;
     line-height: 1.6;
-    padding: 20px;
+  
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -27,7 +27,7 @@ h2 {
 }
 
 form {
-    background: #fff;
+    background: whitesmoke;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
