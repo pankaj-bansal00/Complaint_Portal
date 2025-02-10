@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Complaint Tracking</title>
+    <link rel="stylesheet" href="/static/admin/admin_complaint_list.css">
+</head>
+<body>
+    {% include "nav.html" %}
+    <h2>Admin - Complaint Tracking</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Track ID</th>
+                <th>User</th>
+                <th>Complaint Type</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for complaint in complaints %}
+                <tr>
+                    <td>{{ complaint.track_id }}</td>
+                    <td>{{ complaint.user.username }}</td>
+                    <td>{{ complaint.complaint_type }}</td>
+                    <td>{{ complaint.status }}</td>
+                    <td>{{ complaint.created_at }}</td>
+                    <td>
+                        <a href="{% url 'admin_complaint_detail' complaint.track_id %}">View</a> |
+                        <a href="{% url 'update_complaint_status' complaint.track_id %}">Update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+ 

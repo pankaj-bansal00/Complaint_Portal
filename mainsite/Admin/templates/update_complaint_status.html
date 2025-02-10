@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Complaint Status</title>
+    <link rel="stylesheet" href="/static/admin/update_complaint_status.css">
+</head>
+<body>
+    {% include "nav.html" %}
+    <div class="update-container">
+    <h2>Update Complaint Status - {{ complaint.track_id }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="status">Update Status:</label>
+        <select name="status">
+            <option value="pending" {% if complaint.status == "pending" %}selected{% endif %}>Pending</option>
+            <option value="resolved" {% if complaint.status == "resolved" %}selected{% endif %}>Resolved</option>
+        </select>
+
+        <label for="response_message">Response Message (optional):</label>
+        <textarea name="response_message"></textarea>
+
+        <button type="submit">Update</button>
+    </form>
+
+    <a href="{% url 'admin_complaint_detail' complaint.track_id %}">Back to Details</a>
+</body>
+</html>

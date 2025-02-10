@@ -1,0 +1,22 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Details</title>
+    <link rel="stylesheet" href="/static/admin/admin_complaint_detail.css">
+</head>
+<body>
+    {% include "nav.html" %}
+    <div class="container">
+        <h2>Complaint Details - {{ complaint.track_id }}</h2>
+        <p><strong>User:</strong> {{ complaint.user.name }}</p>
+        <p><strong>Customer Type:</strong> {{ complaint.customer_type }}</p>
+        <p><strong>Bank Name:</strong> {{ complaint.bank_name }}</p>
+        <p><strong>Complaint Type:</strong> {{ complaint.complaint_type }}</p>
+        <p><strong>Complaint Title:</strong> {{ complaint.complaint_title }}</p>
+        <p><strong>Description:</strong> {{ complaint.complaint_description }}</p>
+        <p><strong>Status:</strong> {{ complaint.status }}</p>
+        <p><strong>Created At:</strong> {{ complaint.created_at }}</p>
+
+        <a href="{% url 'update_complaint_status' complaint.track_id %}">Update Status</a>
+    </div>
+</body>

@@ -114,3 +114,4 @@ def logout(request):
     request.session.flush()
     # Redirect to the home page after logout
     return redirect('user_register')
+

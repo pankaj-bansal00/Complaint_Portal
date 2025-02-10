@@ -16,13 +16,15 @@
             {% if user.custid %}
                 <p>Welcome, {{ user.name }}</p>
                 <a href="{% url 'logout' %}">Logout</a>
-        
+            {% elif user.is_staff or user.is_superuser %}
+                <p>Welcome, {{ user.name }}</p>
+                <a href="{% url 'logout' %}">Logout</a>
             {% endif %}
         </div>
         <ul class="nav-links">
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{%url 'trackid' %}">Track Complaint</a></li>
-            <li><a href="#stafflogin">Staff Login</a></li>
+            <li><a href="{% url 'staff_login' %}">Staff Login</a></li>
         </ul>   
     </nav>
 </body>

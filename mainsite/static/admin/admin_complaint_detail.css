@@ -1,0 +1,106 @@
+/* General body styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container for the complaint details */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling */
+.container h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Paragraph styling for complaint details */
+.container p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+    transition: background-color 0.3s ease;
+}
+
+.container p:hover {
+    background-color: #e9f5ff;
+}
+
+/* Strong tag inside paragraphs */
+.container p strong {
+    color: #3498db;
+    font-weight: 600;
+}
+
+/* Update Status link styling */
+.container a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #3498db;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.container a:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .container h2 {
+        font-size: 24px;
+    }
+
+    .container p {
+        font-size: 14px;
+    }
+
+    .container a {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+/* Animation for container */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.6s ease-out;
+}
