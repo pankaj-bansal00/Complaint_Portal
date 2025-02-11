@@ -18,11 +18,19 @@ load_dotenv()
 # Access environment variables
 APIKEY = os.getenv('APIKEY')
 
-# Function to generate a random OTP
-def generate_otp():
-    print("otp")
+
+def generate_otp(length=7):
+    """Generate a secure 6-digit OTP."""
+    if length != 7:
+        raise ValueError("OTP length must be 6 digits.")
     
-    return random.randint(1000, 9999)
+    otp = random.randint(100000, 999999)  # Generates a 6-digit OTP
+    return otp
+
+# Example usage:
+otp_code = generate_otp()
+print("Generated OTP:", otp_code)
+
 
 def send_otp_via_sms(request):
     try:

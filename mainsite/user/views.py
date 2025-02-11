@@ -36,7 +36,7 @@ def user_register(request):
             messages.success(request, 'User registered successfully.')
             return redirect('complaint_form')
         
-        messages.error(request, 'Incorrect OTP. Please try again.')
+        messages.error(request, 'Incorrect OTP. Please try again.') 
         return render(request, 'user_register.html')
 
     return render(request, 'user_register.html')
@@ -49,12 +49,21 @@ def user_login(request):
         if not User.objects.filter(phone=phone).exists():
             messages.error(request, 'Phone number not registered.')
             return redirect('user_register')
+            print("Phone:", phone,)
 
-        otp = str(random.randint(100000, 999999))
-        OTPVerification.objects.create(phone=phone, otp=otp)
-        send_otp_via_sms(phone, otp)
-        messages.success(request, 'OTP sent to your phone.')
-        return render(request, 'verify_otp.html', {'phone': phone})
+        # Check if OTP entry exists
+        user_otp = OTPVerification.objects.filter(phone=phone).first()
+        print("OTP Record:", user_otp)
+
+        if not user_otp:
+            messages.error(request, 'Invalid OTP. Please try again.')
+            return render(request, 'verify_otp.html', {'phone': phone})
+
+        # Check OTP expiration (3-minute window)
+        if timezone.now() - user_otp.created_at > timezone.timedelta(minutes=3):
+            messages.error(request, 'OTP has expired. Please request a new one.')
+            return render(request, 'verify_otp.html', {'phone': phone})
+
 
     return render(request, 'user_login.html')
 

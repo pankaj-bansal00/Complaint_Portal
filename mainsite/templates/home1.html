@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Selection</title>
+    <link rel="stylesheet" href="/static/home1.css">
+</head>
+<body>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% include "nav.html" %}
+ 
+    <div class="container">
+        <h1>Welcome to Our Service</h1>
+        <p>Are you an existing customer or a new customer?</p>
+
+        <div class="card-container">
+            <!-- Existing Customer Card -->
+            <div class="card">
+                <h2>Existing Customer</h2>
+                <p>Login to your account and continue where you left off.</p>
+                <button id="existing-btn">Login</button>
+            </div>
+
+            <!-- New Customer Card -->
+            <div class="card">
+                <h2>New Customer</h2>
+                <p>Create an account to explore our services and benefits.</p>
+                <button id="new-btn">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <script >
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("existing-btn").addEventListener("click", function () {
+            checkCustomer("existing");
+        });
+    
+        document.getElementById("new-btn").addEventListener("click", function () {
+            checkCustomer("new");
+        });
+    });
+    function checkCustomer(type) {
+    if (type === "existing") {
+        window.location.href = "{% url 'user_login' %}";  // Django URL for login
+    } else if (type === "new") {
+        window.location.href = "{% url 'user_register' %}";  // Django URL for registration
+    }
+}
+
+    </script>
+</body>
+</html>

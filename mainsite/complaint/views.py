@@ -84,62 +84,6 @@ def complaint_success(request, track_id):
 
 
 
-def sendd_sms(request):
-    try:
-        # Load request data
-        data = json.loads(request.body.decode('utf-8'))  # Decode and parse JSON
-        phone_number = data.get('phone')
-        
-        if not phone_number:
-            return JsonResponse({'success': False, 'error': 'Phone number is required'}, status=400)
-
-        # Generate trackid
-        trackkid = generate_tracking_id()
-        trackid = trackkid
-
-        # Vonage (or custom SMS provider) API credentials
-        userid = os.getenv('USERID')
-        sender = os.getenv('SENDER')
-        api_key = os.getenv('API_KEY')
-        track_template_id = os.getenv("TRACK_TEMPLATE_ID")
-
-        # Message to send
-        message_body = (f"""Dear Customer, your complaint id {trackid} has been registered. Please track the complaint post the two days for the resolution. Regards-The Sirsa central Coop Bank Ltd.""")
-        
-        # API URL
-        url = 'https://www.proactivesms.in/sendsms.jsp'
-
-        # Payload for the API request
-        payload = {
-            'user': userid,
-            'password': api_key,
-            'senderid': sender,
-            'mobiles': phone_number,
-            'sms': message_body,
-            'tempid': track_template_id
-        }
-
-        # Create or update OTP record
-        trackid, created = Complaint.objects.get_or_create(phone=phone_number)
-        if created:
-            print("New Trackid record created.")
-        else:
-            print("Trackid record updated.")
-
-        # Make the API request
-        response = requests.post(url, data=payload)
-
-        # Handle the API response
-        if response.status_code == 200:
-            print(f"OTP sent to {phone_number}. OTP: {trackid}")
-            return JsonResponse({'success': True, 'message': 'OTP sent successfully.'})
-        else:
-            print(f"Failed to send OTP. HTTP Status: {response.status_code}")
-            return JsonResponse({'success': False, 'error': f"HTTP Error {response.status_code}"}, status=500)
-    
-    except Exception as e:
-        print(f"Exception occurred: {e}")
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
 @csrf_exempt  # If you're not using CSRF protection
