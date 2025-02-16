@@ -1,9 +1,18 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-import uuid
 from user.models import User
+import random
 
 
+def generate_trackid():
+    existing_trackids = set(Complaint.objects.values_list("track_id", flat=True))  # Fetch all existing track IDs
+
+    while True:
+        random_number = random.randint(10000, 99999)  # Generate a 5-digit random number
+        trackid = f"SIRSAB{random_number}"  # Format: SIRSAB12345
+
+        if trackid not in existing_trackids:  # Ensure uniqueness
+            return trackid
 
 class Complaint(models.Model):
     CUSTOMER_TYPE_CHOICES = [
@@ -27,9 +36,6 @@ class Complaint(models.Model):
         ('other', 'Other'),
     ]
 
-    TRACK_ID_PREFIX = "SIRSAB"
-    TRACK_ID_LENGTH = 8
-    
 
     track_id = models.CharField(max_length=20, unique=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -42,11 +48,10 @@ class Complaint(models.Model):
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('resolved', 'Resolved')], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
-
     def save(self, *args, **kwargs):
-        if not self.track_id:
-            self.track_id = str(uuid.uuid4().hex[:self.TRACK_ID_LENGTH]).upper()
-        super().save(*args, **kwargs)
+        trackid = generate_trackid()
+        self.track_id = trackid
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.complaint_title} ({self.track_id})"

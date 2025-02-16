@@ -9,10 +9,19 @@
 <body>
     
     {% if messages %}
+    <div id="message-container">
         {% for message in messages %}
-            <p>{{ message }}</p>
+            <div class="popout-message 
+                {% if message.tags == 'success' %}success-message
+                {% elif message.tags == 'error' %}error-message
+                {% else %}warning-message{% endif %}">
+                <button class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                {{ message }}
+            </div>
         {% endfor %}
-    {% endif %}
+    </div>
+{% endif %}
+
     {% include "nav.html" %}
  
     <div class="container">

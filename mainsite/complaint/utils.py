@@ -1,5 +1,10 @@
 import os
 import requests
+import random
+from django.db import models
+from .models import Complaint
+
+
 def send_trackid(trackid, phone_number):
     try:
         print("send_trackid",trackid, phone_number) 
