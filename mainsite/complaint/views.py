@@ -64,18 +64,27 @@ def complaint_form(request):
     return render(request, "complaint_form.html", {"user": user})
 
 
+
 def trackid(request):  
     if request.method == "POST":
-        print("trackid33333333")
         track_id = request.POST.get("track_id")
+        phone = request.POST.get("phone")  # Get phone number from input
+
         try:
-            
+            # Retrieve the complaint based on track_id
             complaint = Complaint.objects.get(track_id=track_id)
-            print("complaint",complaint)
-            return render(request, "trackid.html", {"complaint": complaint})
+
+            # Check if the provided phone number matches the complaint's associated user
+            if complaint.user.phone == phone:  # Assuming 'phone_number' exists in User model
+                return render(request, "trackid.html", {"complaint": complaint})
+            else:
+                messages.error(request, "Phone number does not match the complaint record.")
+                return redirect("trackid")
+
         except Complaint.DoesNotExist:
             messages.error(request, "Complaint not found.")
             return redirect("trackid")
+
     return render(request, 'trackid.html')
 
 def complaint_success(request, track_id):

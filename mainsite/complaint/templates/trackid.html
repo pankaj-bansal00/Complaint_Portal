@@ -42,17 +42,25 @@ td {
     </style>
 </head>
 <body>
+
     {% include "nav.html" %}
+
+    {% if messages %}
+    {% for message in messages %}
+        <p style="color: red;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
 
     <div class="container">
         <h2>Find Your Complaint</h2>
         <form method="post" action="{% url 'trackid' %}">
             {% csrf_token %}
             <input type="text" placeholder="Enter Complaint ID" required name="track_id">
+            <input type="tel" placeholder="Enter Phone Number" required name="phone">
             <button type="submit">Find Complaint</button>
         </form>
     </div>
-    {% if complaint.track_id %}
+    {% if complaint.track_id  %}
     <div class="cmpdetails">
         <table border="1">
             <tr>
