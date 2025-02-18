@@ -45,6 +45,7 @@ def user_register(request):
 
 def user_login(request):
     if request.method == 'POST':
+        otp = request.POST.get('otp')
         phone = request.POST.get('phone')
         if not User.objects.filter(phone=phone).exists():
             messages.error(request, 'Phone number not registered.')
@@ -64,7 +65,15 @@ def user_login(request):
             messages.error(request, 'OTP has expired. Please request a new one.')
             return render(request, 'verify_otp.html', {'phone': phone})
 
-
+       # Validate OTP and register user
+        if otp == user_otp.otp:
+            user, created = User.objects.get_or_create(phone=phone)
+            request.session["custid"] = user.pk  # Use the primary key if custid is not defined
+            messages.success(request, 'User registered successfully.')
+            return redirect('complaint_form')
+        
+        messages.error(request, 'Incorrect OTP. Please try again.') 
+        return render(request, 'user_register.html')
     return render(request, 'user_login.html')
 
 def verify_otp(request):

@@ -41,7 +41,7 @@ class Complaint(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     customer_type = models.CharField(max_length=10, choices=CUSTOMER_TYPE_CHOICES)
     bank_name = models.CharField(max_length=50, choices=BANK_CHOICES)
-    account_number = models.CharField(max_length=20)
+    account_number = models.CharField(max_length=16)
     complaint_type = models.CharField(max_length=20, choices=COMPLAINT_TYPE_CHOICES)
     complaint_title = models.CharField(max_length=200)
     complaint_description = models.TextField(max_length=500)

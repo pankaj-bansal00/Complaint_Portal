@@ -2,7 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/static/complaintform.css">
+        <link rel="stylesheet" href="/static/complaint/complaintform.css">
         <title>Document</title>
     </head>
     <body>
@@ -34,12 +34,38 @@
             </select>
         
             <label>Account Number:</label>
-            <input type="text" name="account_number" required>
+            <input type="number" name="account_number" required>
+            <button type="button" onclick="toggleVisibility()" style="margin-left: 5px;">👁️</button>
 
                 <label for="branch">Select Branch</label >
                 <select id="branch" name="branch" required>
-                    <option>Suchan (0042)</option>
-                    <option>Branch 2</option>
+                    <option value="" disabled selected>Select Branch Name</option>
+                    <option value="Head Office">Head Office (0001)</option>
+                    <option value="Ding">Ding (0002)</option>
+                    <option value="Rania">Rania (0003)</option>
+                    <option value="Amritsar Nawan">Amritsar Nawan (0004)</option>
+                    <option value="Madhosingania">Madhosingania (0005)</option>
+                    <option value="Aboobshahar">Aboobshahar (0006)</option>
+                    <option value="City Branch Sirsa">City Branch Sirsa (0007)</option>
+                    <option value="Bansudhar">Bansudhar (0008)</option>
+                    <option value="Baragurah">Baragurah (0009)</option>
+                    <option value="Barnala Road">Barnala Road (0010)</option>
+                    <option value="Bani">Bani (0011)</option>
+                    <option value="Bijjuwali">Bijjuwali (0012)</option>
+                    <option value="Chotala Branch">Chotala Branch (0013)</option>
+                    <option value="Damdama">Damdama (0016)</option>
+                    <option value="Desujodha">Desujodha (0017)</option>
+                    <option value="Dharampura">Dharampura (0018)</option>
+                    <option value="Ellenabad">Ellenabad (0019)</option>
+                    <option value="Goriwala">Goriwala (0020)</option>
+                    <option value="Jamal Branch">Jamal Branch (0021)</option>
+                    <option value="Kagdana">Kagdana (0022)</option>
+                    <option value="Kalanwali">Kalanwali (0023)</option>
+                    <option value="Keharwala">Keharwala (0024)</option>
+                    <option value="Kharia">Kharia (0025)</option>
+                    <option value="Khokhar">Khokhar (0026)</option>
+                    <option value="Kurganwali">Kurganwali (0027)</option>
+
                 </select>
         
                 <label for="debitCard">Debit Card Number</label>
@@ -72,6 +98,17 @@
         <footer>
             <p>© 2025 CMS Management | <a href="https://coopbksirsa.com/" target="_blank">THE SIRSA CENTRAL COOPERATIVE BANK LIMITED</a></p>
         </footer>
+
+        <script>
+            function toggleVisibility() {
+    var input = document.getElementById("account_number");
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+}
+        </script>
         
     </body>
     </html>
