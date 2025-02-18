@@ -3,10 +3,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/complaint/complaintform.css">
-        <title>Document</title>
+        <title>Complaint Form</title>
     </head>
     <body>
-      
+    
         <h2>Submit a Complaint</h2>
 
         <form method="POST" action="{% url 'complaint_form' %}">
@@ -34,8 +34,12 @@
             </select>
         
             <label>Account Number:</label>
-            <input type="number" name="account_number" required>
-            <button type="button" onclick="toggleVisibility()" style="margin-left: 5px;">👁️</button>
+            <div style="display: flex; align-items: center;">
+                <input type="password" id="account_number" name="account_number" required style="flex: 1; width: 540px; height: 48.8px;">
+                <button type="button" onclick="toggleVisibility()" style="margin-left: 5px; background: none; border: none; cursor: pointer;">
+                    👁️
+                </button>
+            </div>
 
                 <label for="branch">Select Branch</label >
                 <select id="branch" name="branch" required>

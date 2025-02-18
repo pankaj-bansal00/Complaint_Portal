@@ -18,6 +18,11 @@ body {
     justify-content: center;
 }
 
+/* Hide scrollbar for form in WebKit browsers */
+form::-webkit-scrollbar {
+    display: none;
+}
+
 h2 {
     font-size: 2.5rem;
     color: #2c3e50;
