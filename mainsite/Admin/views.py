@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
-from django.shortcuts import render
 from .models import Complaint
 
 def adminmain(request):
@@ -23,10 +22,6 @@ def adminmain(request):
     }
     
     return render(request, 'adminmain.html', context)
-
-
-
-
 
 # Restrict access to admin users only
 def is_admin(user):
