@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        .tiles-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .tile {
+            width: 200px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .pending { background-color: orange; }
+        .under-process { background-color: blue; }
+        .resolved { background-color: green; }
+        .total { background-color: red; }
+    </style>
+</head>
+<body>
+
+    {% include "nav.html" %}
+
+    <div class="tiles-container">
+        <a href="{% url 'admin_complaint_list' %}" class="tile total">
+            Total Complaints: {{ total_count }}
+        </a>
+        <a href="#" class="tile pending">
+            Pending Complaints: {{ pending_count }}
+        </a>
+        <a href="#" class="tile under-process">
+            Under Process: {{ under_process_count }}
+        </a>
+        <a href="#" class="tile resolved">
+            Resolved Complaints: {{ resolved_count }}
+        </a>
+    </div>
+
+</body>
+</html>

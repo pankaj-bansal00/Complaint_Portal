@@ -6,6 +6,27 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+from django.shortcuts import render
+from .models import Complaint
+
+def adminmain(request):
+    pending_count = Complaint.objects.filter(status='pending').count()
+    under_process_count = Complaint.objects.filter(status='Under Process').count()
+    resolved_count = Complaint.objects.filter(status='resolved').count()
+    total_count = Complaint.objects.count()
+
+    context = {
+        'pending_count': pending_count,
+        'under_process_count': under_process_count,
+        'resolved_count': resolved_count,
+        'total_count': total_count
+    }
+    
+    return render(request, 'adminmain.html', context)
+
+
+
+
 
 # Restrict access to admin users only
 def is_admin(user):
@@ -13,7 +34,7 @@ def is_admin(user):
 
 def staff_login(request):
     if request.user.is_superuser and request.user.is_staff:
-        return redirect('admin_complaint_list')
+        return redirect('adminmain')
 
     if request.method == "POST":
         username = request.POST.get("username")

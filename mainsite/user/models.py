@@ -7,6 +7,9 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=10, unique=True, blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     def __str__(self):
         return f"OTP for {self.email}"
 

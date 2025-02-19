@@ -45,13 +45,13 @@ class Complaint(models.Model):
     complaint_type = models.CharField(max_length=20, choices=COMPLAINT_TYPE_CHOICES)
     complaint_title = models.CharField(max_length=200)
     complaint_description = models.TextField(max_length=500)
-    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('resolved', 'Resolved')], default='pending')
+    status = models.CharField(max_length=20, choices=[('pending', 'Pending'),('Under Process', 'Under Process'),('resolved', 'Resolved')], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         trackid = generate_trackid()
         self.track_id = trackid
-        return super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)    
 
     def __str__(self):
         return f"{self.complaint_title} ({self.track_id})"

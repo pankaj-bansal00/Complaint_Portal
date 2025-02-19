@@ -16,6 +16,7 @@
         <select name="status">
             <option value="pending" {% if complaint.status == "pending" %}selected{% endif %}>Pending</option>
             <option value="resolved" {% if complaint.status == "resolved" %}selected{% endif %}>Resolved</option>
+            <option value="Under Process" {% if complaint.status == "Under Process" %}selected{% endif %}>Under Process</option>
         </select>
 
         <label for="response_message">Response Message (optional):</label>
