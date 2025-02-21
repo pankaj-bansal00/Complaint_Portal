@@ -38,7 +38,7 @@ def staff_login(request):
 
         if user is not None and user.is_staff:
             login(request, user)
-            return redirect('admin_complaint_list')
+            return redirect('adminmain')
         else:
             messages.error(request, "Invalid credentials or not authorized.")
 

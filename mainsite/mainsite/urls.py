@@ -21,6 +21,7 @@ from user import urls
 
 
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     path('home/', views.home, name='home'),
     path('user/', include('user.urls')),
