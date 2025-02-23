@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from .models import Complaint
 from .models import StaffProfile
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.utils.timezone import now, timedelta  # Import 'now' correctly
 
 
@@ -82,33 +82,52 @@ def staff_register(request):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
+        # ✅ Check if username already exists
+        if StaffProfile.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists. Please choose a different one.")
+            return redirect('staff_register')
+
+        # ✅ Check if email already exists
+        if StaffProfile.objects.filter(email=email).exists():
+            messages.error(request, "Email already in use. Please use a different one.")
+            return redirect('staff_register')
+
         if password == confirm_password:
             staff = StaffProfile.objects.create(username=username, email=email, password=make_password(password))
-            staff.password = password
-            staff.save()
             messages.success(request, "Staff registered successfully.")
             return redirect('admin_dashboard')
         else:
             messages.error(request, "Passwords do not match.")
 
     return render(request, "staff_register.html")
-def staff_login(request):
-    if request.user.is_staff:
-        return redirect('complaint_dashboard')
 
-    if request.method == "POST":
+def staff_login(request):
+  if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
 
-        if user is not None and user.is_staff_member:  # Ensure only staff can log in
-            login(request, user)
-            return redirect('complaint_dashboard')
-        else:
-            messages.error(request, "Invalid credentials or not authorized.")
+        print("Attempting login for:", username)
 
-    # ✅ Always return a response (Fixes the ValueError)
-    return render(request, "staff_login.html")
+        try:
+            # Get the staff member with the provided username
+            staff = StaffProfile.objects.get(username=username)
+            if check_password(password, staff.password):  # Verify password
+                request.session["id"] = (
+                    staff.id
+                )  # Store staff_id in the session
+                messages.success(request, "Logged in successfully!")
+                print("Login successful, redirecting to dashboard...")
+                return redirect("complaint_dashboard")  # Redirect to seller dashboard
+            else:
+                print("Invalid credentials: Password mismatch")
+                messages.error(request, "Invalid credentials. Please try again.")
+                return redirect("staff_login")
+        except StaffProfile.DoesNotExist:
+            print("Seller with username not found:", username)
+            messages.error(request, "No seller account found with this username.")
+            return redirect("staff_login")
+
+  return render(request, "staff_login.html")
 
 @csrf_exempt
 def change_password(request, staff_id):
