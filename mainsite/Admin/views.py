@@ -2,34 +2,55 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from .models import Complaint
+import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from .models import Complaint
+from .models import StaffProfile
+from django.contrib.auth.hashers import make_password
+from django.utils.timezone import now, timedelta  # Import 'now' correctly
 
-def adminmain(request):
+
+# Restrict access to admin users only
+def is_admin(user):
+    return user.is_staff and user.is_superuser
+
+def admin_dashboard(request): 
+    today = now().date()
+    yesterday = today - timedelta(days=1)
+
+    # Complaints created today & yesterday
+    today_complaints = Complaint.objects.filter(created_at__date=today).count()
+    yesterday_complaints = Complaint.objects.filter(created_at__date=yesterday).count()
+
+    # Complaints resolved today & yesterday
+    today_resolved_complaints = Complaint.objects.filter(status='resolved', resolved_at__date=today).count()
+    yesterday_resolved_complaints = Complaint.objects.filter(status='resolved', resolved_at__date=yesterday).count()
+
+    # Other complaint counts
     pending_count = Complaint.objects.filter(status='pending').count()
     under_process_count = Complaint.objects.filter(status='Under Process').count()
     resolved_count = Complaint.objects.filter(status='resolved').count()
     total_count = Complaint.objects.count()
 
+    # Pass data to the template
     context = {
         'pending_count': pending_count,
         'under_process_count': under_process_count,
         'resolved_count': resolved_count,
-        'total_count': total_count
+        'total_count': total_count,
+        'today_complaints': today_complaints,
+        'yesterday_complaints': yesterday_complaints,
+        'today_resolved_complaints': today_resolved_complaints,
+        'yesterday_resolved_complaints': yesterday_resolved_complaints,
     }
-    
-    return render(request, 'adminmain.html', context)
+    return render(request, "admin_dashboard.html", context)
 
-# Restrict access to admin users only
-def is_admin(user):
-    return user.is_staff or user.is_superuser
-
-def staff_login(request):
+def admin_login(request):
     if request.user.is_superuser and request.user.is_staff:
-        return redirect('adminmain')
+        return redirect('admin_dashboard')
 
     if request.method == "POST":
         username = request.POST.get("username")
@@ -38,15 +59,133 @@ def staff_login(request):
 
         if user is not None and user.is_staff:
             login(request, user)
-            return redirect('adminmain')
+            return redirect('admin_dashboard')
         else:
             messages.error(request, "Invalid credentials or not authorized.")
 
-    return render(request, "staff_login.html")
+    return render(request, "admin_login.html")
 
 def logout_view(request):
-    logout(request)
-    return redirect('staff_login')
+    if request.user.is_superuser:
+        logout(request)
+        return redirect('admin_login')
+    else:
+        return redirect('staff_login')  
+
+
+# Staff register and login
+
+def staff_register(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if password == confirm_password:
+            staff = StaffProfile.objects.create(username=username, email=email, password=make_password(password))
+            staff.password = password
+            staff.save()
+            messages.success(request, "Staff registered successfully.")
+            return redirect('admin_dashboard')
+        else:
+            messages.error(request, "Passwords do not match.")
+
+    return render(request, "staff_register.html")
+def staff_login(request):
+    if request.user.is_staff:
+        return redirect('complaint_dashboard')
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.is_staff_member:  # Ensure only staff can log in
+            login(request, user)
+            return redirect('complaint_dashboard')
+        else:
+            messages.error(request, "Invalid credentials or not authorized.")
+
+    # ✅ Always return a response (Fixes the ValueError)
+    return render(request, "staff_login.html")
+
+@csrf_exempt
+def change_password(request, staff_id):
+    """ Change the password of a staff member """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        new_password = data.get("password")
+
+        staff = get_object_or_404(StaffProfile, id=staff_id)
+        staff.password = make_password(new_password)  # ✅ Hashing password
+        staff.save()
+
+        return JsonResponse({"message": "Password updated successfully."})
+    return JsonResponse({"error": "Invalid request"}, status=400)
+@csrf_exempt
+def change_email(request, staff_id):
+    """ Change the email of a staff member """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        new_email = data.get("email")
+        
+        staff = get_object_or_404(StaffProfile, id=staff_id)  # ✅ Fixed here
+        staff.email = new_email
+        staff.save()
+        
+        return JsonResponse({"message": "Email updated successfully."})
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+@csrf_exempt
+def delete_staff(request, staff_id):
+    """ Delete a staff member """
+    if request.method == "DELETE":
+        staff = get_object_or_404(StaffProfile, id=staff_id)
+        staff.delete()
+        return JsonResponse({"message": "Staff deleted successfully."})
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+def staff_list(request):
+    """ Fetch and display all staff members """
+    staff_members = StaffProfile.objects.all()
+    return render(request, "staff_list.html", {"staff_list": staff_members})
+
+
+
+# Complaint Dashboard in which complaints are displayed according to the filter
+def complaint_dashboard(request):
+    today = now().date()
+    yesterday = today - timedelta(days=1)
+
+    # Complaints created today & yesterday
+    today_complaints = Complaint.objects.filter(created_at__date=today).count()
+    yesterday_complaints = Complaint.objects.filter(created_at__date=yesterday).count()
+
+    # Complaints resolved today & yesterday
+    today_resolved_complaints = Complaint.objects.filter(status='resolved', resolved_at__date=today).count()
+    yesterday_resolved_complaints = Complaint.objects.filter(status='resolved', resolved_at__date=yesterday).count()
+
+    # Other complaint counts
+    pending_count = Complaint.objects.filter(status='pending').count()
+    under_process_count = Complaint.objects.filter(status='Under Process').count()
+    resolved_count = Complaint.objects.filter(status='resolved').count()
+    total_count = Complaint.objects.count()
+
+    # Pass data to the template
+    context = {
+        'pending_count': pending_count,
+        'under_process_count': under_process_count,
+        'resolved_count': resolved_count,
+        'total_count': total_count,
+        'today_complaints': today_complaints,
+        'yesterday_complaints': yesterday_complaints,
+        'today_resolved_complaints': today_resolved_complaints,
+        'yesterday_resolved_complaints': yesterday_resolved_complaints,
+    }
+
+    return render(request, 'complaint_dashboard.html', context)
+
 
 # Admin Dashboard - List Complaints
 @user_passes_test(is_admin)
@@ -83,7 +222,7 @@ def update_complaint_status(request, track_id):
 def delete_complaint(request, track_id):
     complaint = get_object_or_404(Complaint, track_id=track_id)
     complaint.delete()
-    return redirect('admin_complaints')
+    return redirect('admin_complaint_list')
 
 @user_passes_test(is_admin)
 def resolve_complaint(request, track_id):

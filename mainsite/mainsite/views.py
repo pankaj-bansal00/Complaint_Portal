@@ -3,10 +3,6 @@ from django.http import HttpResponse
 from user.models import User
 from user import views
 
-# Create your views here.
-
-def home(request):
-    return render(request, 'home.html')
-
+# Create your views here.=
 def demo_home(request):
     return render(request,'home1.html')

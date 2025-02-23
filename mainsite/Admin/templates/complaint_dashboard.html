@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Icons & Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/admin/complaint_dashboard.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    {% include "nav.html" %}
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Staff Dashboard</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="card tile total">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-list"></i> Total Complaints</h5>
+                        <p class="card-text">{{ total_count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card tile pending">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-clock"></i> Pending Complaints</h5>
+                        <p class="card-text">{{ pending_count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card tile under-process">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-spinner"></i> Under Process</h5>
+                        <p class="card-text">{{ under_process_count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card tile resolved">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-check-circle"></i> Resolved</h5>
+                        <p class="card-text">{{ resolved_count }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-3">
+            <div class="col-md-6">
+                <div class="card tile total">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-calendar-day"></i> Today's Complaints</h5>
+                        <p class="card-text">{{ today_complaints }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card tile resolved">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-thumbs-up"></i> Resolved Today</h5>
+                        <p class="card-text">{{ today_resolved_complaints }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script >document.addEventListener("DOMContentLoaded", function () {
+        function adjustCards() {
+            let cards = document.querySelectorAll(".card");
+    
+            cards.forEach(card => {
+                if (window.innerWidth < 768) {
+                    card.style.borderRadius = "8px";
+                    card.style.fontSize = "16px";
+                    card.style.padding = "15px";
+                } else {
+                    card.style.borderRadius = "12px";
+                    card.style.fontSize = "18px";
+                    card.style.padding = "20px";
+                }
+            });
+        }
+    
+        // Run on load
+        adjustCards();
+    
+        // Run on window resize
+        window.addEventListener("resize", adjustCards);
+    });
+    </script>
+
+</body>
+</html>

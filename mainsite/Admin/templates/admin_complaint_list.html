@@ -12,7 +12,7 @@
     <table border="1">
         <thead>
             <tr>
-                <th>Track ID</th>
+                <th>Track ID</th>   
                 <th>User</th>
                 <th>Complaint Type</th>
                 <th>Status</th>
@@ -31,6 +31,9 @@
                     <td>
                         <a href="{% url 'admin_complaint_detail' complaint.track_id %}">View</a> |
                         <a href="{% url 'update_complaint_status' complaint.track_id %}">Update</a>
+                        {% if user.is_superuser %}
+                        <a href="{% url 'delete_complaint' complaint.track_id %}">Delete</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

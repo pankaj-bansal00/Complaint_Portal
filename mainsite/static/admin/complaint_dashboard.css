@@ -1,0 +1,68 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Card (Tile) Styles */
+.card {
+    text-align: center;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    color: white;
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-text {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Colors */
+.total {
+    background-color: #1e5085;
+}
+
+.pending {
+    background-color:#e31e24;
+    color: #fffefe;
+}
+
+.under-process {
+    background-color: #fff700;
+    color:black;
+}
+
+.resolved {
+    background-color: #28a745;
+}
+
+/* Hover Effect */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        font-size: 16px;
+        padding: 15px;
+    }
+}

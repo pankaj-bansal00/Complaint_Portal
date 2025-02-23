@@ -14,6 +14,9 @@ class User(models.Model):
         return f"OTP for {self.email}"
 
 
+
+
+
 class OTPVerification(models.Model):
     phone = models.CharField(max_length=10, unique=True)
     otp = models.CharField(max_length=4)

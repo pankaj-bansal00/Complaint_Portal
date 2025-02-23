@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .utils import send_otp_via_sms
-from Admin import views as admin_views
+
 
 urlpatterns = [
     path('user_register/', views.user_register, name='user_register'),
