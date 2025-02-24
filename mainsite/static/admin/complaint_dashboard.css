@@ -14,13 +14,13 @@ body {
 }
 
 /* Card (Tile) Styles */
+/* Card Styles */
 .card {
     text-align: center;
     border-radius: 12px;
-    transition: all 0.3s ease-in-out;
+    transition: 0.3s;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border: none;
-    color: white;
     padding: 15px;
 }
 
@@ -35,29 +35,18 @@ body {
 }
 
 /* Colors */
-.total {
-    background-color: #1e5085;
-}
-
-.pending {
-    background-color:#e31e24;
-    color: #fffefe;
-}
-
-.under-process {
-    background-color: #fff700;
-    color:black;
-}
-
-.resolved {
-    background-color: #28a745;
-}
+.total { background-color: #007bff; }
+.pending { background-color: #ffc107; color: #000; }
+.under-process { background-color: #17a2b8; }
+.resolved { background-color: #28a745; }
 
 /* Hover Effect */
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
+
+/* R
 
 /* Responsive Design */
 @media (max-width: 768px) {

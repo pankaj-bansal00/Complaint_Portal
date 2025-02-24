@@ -117,7 +117,7 @@ def staff_login(request):
                 )  # Store staff_id in the session
                 messages.success(request, "Logged in successfully!")
                 print("Login successful, redirecting to dashboard...")
-                return redirect("complaint_dashboard")  # Redirect to seller dashboard
+                return redirect("/complaints/complaint_dashboard")  # Redirect to seller dashboard
             else:
                 print("Invalid credentials: Password mismatch")
                 messages.error(request, "Invalid credentials. Please try again.")
@@ -203,20 +203,20 @@ def complaint_dashboard(request):
         'yesterday_resolved_complaints': yesterday_resolved_complaints,
     }
 
-    return render(request, 'complaint_dashboard.html', context)
+    return render(request, 'complaints/complaint_dashboard.html', context)
 
 
-# Admin Dashboard - List Complaints
+
 @user_passes_test(is_admin)
 def complaint_list(request):
     complaints = Complaint.objects.all().order_by('-created_at')
-    return render(request, 'admin_complaint_list.html', {'complaints': complaints})
+    return render(request, 'complaints/total_complaints.html', {'complaints': complaints})
 
 # Admin Dashboard - Complaint Details
 @user_passes_test(is_admin)
 def admin_complaint_detail(request, track_id):
     complaint = get_object_or_404(Complaint, track_id=track_id)
-    return render(request, "admin_complaint_detail.html", {"complaint": complaint})
+    return render(request, "complaints/admin_complaint_detail.html", {"complaint": complaint})
 
 # Admin Dashboard - Update Complaint Status
 @user_passes_test(is_admin)
@@ -232,27 +232,27 @@ def update_complaint_status(request, track_id):
         # Send email or notification to user (if needed)
         # You can integrate Django's email system here.
 
-        return redirect('admin_complaint_detail', track_id=track_id)
+        return redirect('complaints/admin_complaint_detail', track_id=track_id)
 
-    return render(request, 'update_complaint_status.html', {'complaint': complaint})
+    return render(request, 'complaints/update_complaint_status.html', {'complaint': complaint})
 
 # Admin Dashboard - Delete Complaint
 @user_passes_test(is_admin)
 def delete_complaint(request, track_id):
     complaint = get_object_or_404(Complaint, track_id=track_id)
     complaint.delete()
-    return redirect('admin_complaint_list')
+    return redirect('complaints/admin_complaint_list')
 
 @user_passes_test(is_admin)
 def resolve_complaint(request, track_id):
     complaint = get_object_or_404(Complaint, track_id=track_id)
     complaint.status = "resolved"
     complaint.save()
-    return redirect('admin_complaint_detail', track_id=track_id)
+    return redirect('complaints/admin_complaint_detail', track_id=track_id)
 
 @user_passes_test(is_admin)
 def close_complaint(request, track_id):
     complaint = get_object_or_404(Complaint, track_id=track_id)    
     complaint.status = "closed"
     complaint.save()
-    return redirect('admin_complaint_detail', track_id=track_id)
+    return redirect('complaints/admin_complaint_detail', track_id=track_id)

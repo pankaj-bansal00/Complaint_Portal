@@ -13,7 +13,7 @@ urlpatterns = [
     path("change_email/<int:staff_id>/", views.change_email, name="change_email"),
     path("delete_staff/<int:staff_id>/", views.delete_staff, name="delete_staff"),
 
-    path('complaints/', views.complaint_list, name='admin_complaint_list'),
+    path('total_complaints/', views.complaint_list, name='total_complaints'),
     path('complaints/<str:track_id>/', views.admin_complaint_detail, name='admin_complaint_detail'),
     path('complaints/<str:track_id>/update/', views.update_complaint_status, name='update_complaint_status'),
     path('complaints/<str:track_id>/delete/', views.delete_complaint, name='delete_complaint'),

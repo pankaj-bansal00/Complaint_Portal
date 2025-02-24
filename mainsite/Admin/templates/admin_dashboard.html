@@ -26,9 +26,14 @@
         </div>
         <ul class="nav flex-column">
             <li class="nav-item"><a href="{% url 'admin_dashboard' %}" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li class="nav-item"><a href="{% url 'admin_complaint_list' %}" class="nav-link"><i class="fas fa-list"></i> Complaints</a></li>
+            <li class="nav-item"><a href="{% url 'total_complaints' %}" class="nav-link"><i class="fas fa-list"></i> Complaints</a></li>
             <li class="nav-item"><a href="{% url 'staff_list' %}" class="nav-link"><i class="fas fa-users"></i> Manage Staff</a></li>
-            <li class="nav-item"><a href="{% url 'staff_register' %}" class="nav-link"><i class="fas fa-user-plus"></i> Add Staff</a></li>
+            <li class="nav-item">
+                <a href="{% url 'logout' %}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+            
         </ul>
     </nav>
 
@@ -41,8 +46,12 @@
                 <div class="col-md-3 col-sm-6">
                     <div class="card tile total">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-list"></i> Total Complaints</h5>
-                            <p class="card-text">{{ total_count }}</p>
+                            <h5 class="card-title">
+                                <a href="{% url 'total_complaints' %}" style="color: black;">
+                                    <i class="fas fa-list"></i> Total Complaints
+                                </a>
+                            </h5>
+                                                        <p class="card-text">{{ total_count }}</p>
                         </div>
                     </div>
                 </div>
