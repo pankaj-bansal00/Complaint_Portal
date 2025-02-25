@@ -20,4 +20,11 @@ urlpatterns = [
     path('complaints/<str:track_id>/resolve/', views.resolve_complaint, name='resolve_complaint'),
     path('complaints/<str:track_id>/close/', views.close_complaint, name='close_complaint'),
     path('complaint_dashboard/', views.complaint_dashboard, name='complaint_dashboard'),
+
+    path('pending-complaints/', views.pending_complaints, name='pending_complaint'),
+    path('underprocess/', views.under_process_complaints, name='underprocess'),
+    path('resolved-complaints/', views.resolved_complaints, name='resolved'),
+    path('today-complaints/', views.today_complaints, name='today_complaints'),
+    path('today-resolved/', views.today_resolved_complaints, name='today_resolved_complaints'),
+
 ]

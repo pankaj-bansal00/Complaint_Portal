@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending </title>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Pending Complaints</h2>
+    
+        {% if pending_complaints %}
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Track ID</th>
+                        <th>User</th>
+                        <th>Complaint Title</th>
+                        <th>Bank</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in pending_complaints %}
+                        <tr>
+                            <td>{{ complaint.track_id }}</td>
+                            <td>{{ complaint.user }}</td>
+                            <td>{{ complaint.complaint_title }}</td>
+                            <td>{{ complaint.bank_name }}</td>
+                            <td>{{ complaint.created_at }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center">No pending complaints at the moment.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

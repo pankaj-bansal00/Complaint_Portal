@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Resolved Complaints</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/admin/admin_dashboard.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Today's Resolved Complaints</h2>
+        
+        <div class="card p-3">
+            <h5>Total Resolved Today: <span class="badge bg-success">{{ today_resolved_count }}</span></h5>
+        </div>
+
+        <table class="table table-bordered table-hover mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Track ID</th>
+                    <th>User</th>
+                    <th>Bank</th>
+                    <th>Type</th>
+                    <th>Title</th>
+                    <th>Resolved At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in resolved_complaints %}
+                    <tr>
+                        <td>{{ complaint.track_id }}</td>
+                        <td>{{ complaint.user.username }}</td>
+                        <td>{{ complaint.bank_name }}</td>
+                        <td>{{ complaint.complaint_type }}</td>
+                        <td>{{ complaint.complaint_title }}</td>
+                        <td>{{ complaint.resolved_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No complaints resolved today.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

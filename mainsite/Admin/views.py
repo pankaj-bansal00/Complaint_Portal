@@ -256,3 +256,51 @@ def close_complaint(request, track_id):
     complaint.status = "closed"
     complaint.save()
     return redirect('complaints/admin_complaint_detail', track_id=track_id)
+
+
+def pending_complaints(request):
+    pending_complaints = Complaint.objects.filter(status='pending').order_by('-created_at')
+
+    context = {
+        'pending_complaints': pending_complaints
+    }
+    return render(request, 'complaints/pending_complaint.html', context)
+
+
+def under_process_complaints(request):
+    under_process_complaints = Complaint.objects.filter(status='Under Process').order_by('-created_at')
+
+    context = {
+        'under_process_complaints': under_process_complaints
+    }
+    return render(request, 'complaints/underprocess.html', context)
+
+
+def resolved_complaints(request):
+    resolved_complaints = Complaint.objects.filter(status='resolved').order_by('-resolved_at')
+
+    context = {
+        'resolved_complaints': resolved_complaints
+    }
+    return render(request, 'complaints/resolved.html', context)
+
+
+def today_complaints(request):
+    today = now().date()
+    complaints = Complaint.objects.filter(created_at__date=today).order_by('-created_at')
+
+    context = {
+        'complaints': complaints,
+        'today_complaints_count': complaints.count(),
+    }
+    return render(request, 'complaints/today_complaints.html', context)
+
+def today_resolved_complaints(request):
+    today = now().date()
+    resolved_complaints = Complaint.objects.filter(status='resolved', resolved_at__date=today).order_by('-resolved_at')
+
+    context = {
+        'resolved_complaints': resolved_complaints,
+        'today_resolved_count': resolved_complaints.count(),
+    }
+    return render(request, 'complaints/today_resolved_complaints.html', context)
