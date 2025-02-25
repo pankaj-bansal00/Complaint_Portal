@@ -1,7 +1,7 @@
 /* General Styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #75bf86, #98d18c);
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
     display: flex;

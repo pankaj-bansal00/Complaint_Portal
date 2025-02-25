@@ -4,114 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
-    <link rel="stylesheet" href="/static/user/registration.css">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/user/user_register.css">
+    
+    <style>
+    /* Ensure the body allows space for fixed navbar */
+body {
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Navbar Styling */
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Add margin to the heading to avoid being covered by the navbar */
+.page-heading {
+    margin-top: 90px; /* Adjust this to match navbar height */
+    text-align: center;
+}
+
+/* Flex Container for Logo & Form */
+.content-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 20px; /* Space from heading */
+}
+
+/* Logo Styling */
+.logo {
+    flex: 1;
+    text-align: center;
+}
+
+
+/* Form Styling */
+.registration-form {
+    flex: 1;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Responsive: Stack logo and form on smaller screens */
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .registration-form {
+        max-width: 100%;
+    }
+}
+
+    </style>
 </head>
 <body>
-
-
-    {% if messages %}
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
-    {% endif %}
-
     {% include "nav.html" %}
-    <div class="container">
-        <h2>Register</h2>
-        <form id="registration-form" action="{% url 'user_register' %}" method="POST">
-            {% csrf_token %}
-            
-            <input type="text" placeholder="Full Name" required name="name">
-            <input type="email" placeholder="Email" name="email">
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <input type="text" name="phone" placeholder="Phone Number" required id="phone-input">
-                <button type="button" id="send-otp-button" style="height:35px;">Send OTP</button>
-                <button type="button" id="resend-otp-button" style="height:35px; display: none;">Resend OTP</button>
-            </div>
-            <div id="otp-section" style="display: none; margin-top: 10px;">
-                <input type="text" name="otp" placeholder="Enter OTP" required name="otp">
-            </div>
-            <p id="countdown-timer" style="color: red; display: none;"></p>
-            <button type="submit" id="submit-button" style="height:35px; margin-top: 10px; display: none;">Register</button>
-            <br>
-   
-        </form>
+    <!-- Heading at the Top -->
+    <div class="page-heading">
+        <h1>Central Cooperative Bank</h1>
+    </div>
 
-        <script>
-            const sendOtpButton = document.getElementById("send-otp-button");
-            const resendOtpButton = document.getElementById("resend-otp-button");
-            const countdownTimer = document.getElementById("countdown-timer");
-            const submitButton = document.getElementById("submit-button");
-            const otpSection = document.getElementById("otp-section");
+    <!-- Flex Container: Logo & Form -->
+    <div class="content-container">
+        <!-- Logo Section -->
+        <div class="logo">
+            <img src="/static/user/logo.png" alt="Logo" style="width: 400px; height: 200px;">
+        </div>
 
-            let countdownInterval;
+        <!-- Registration Form -->
+        <div class="registration-form">
+            <h2 class="text-center mb-4">Register</h2>
+            <form id="registration-form" action="{% url 'user_register' %}" method="POST">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Full Name" required name="name">
+                </div>
+                
+                <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="Email" name="email">
+                </div>
+                
+                <div class="mb-3 d-flex gap-2 align-items-center">
+                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" required id="phone-input">
+                    <button type="button" class="btn btn-primary" id="send-otp-button">Send OTP</button>
+                    <button type="button" class="btn btn-secondary" id="resend-otp-button" style="display: none;">Resend OTP</button>
+                </div>
+                
+                <div class="mb-3" id="otp-section" style="display: none;">
+                    <input type="text" class="form-control" name="otp" placeholder="Enter OTP" required>
+                </div>
+                
+                <p id="countdown-timer" class="text-center text-danger" style="display: none;"></p>
+                
+                <button type="submit" class="btn btn-primary w-100" id="submit-button" style="display: none;">Register</button>
+            </form>
+        </div>
+    </div>
 
-            function sendOtp() {
-                const phone = document.getElementById("phone-input").value;
+    <!-- JavaScript for OTP Handling -->
+    <script>
+        const sendOtpButton = document.getElementById("send-otp-button");
+        const resendOtpButton = document.getElementById("resend-otp-button");
+        const countdownTimer = document.getElementById("countdown-timer");
+        const submitButton = document.getElementById("submit-button");
+        const otpSection = document.getElementById("otp-section");
 
-                fetch("{% url 'send_otp' %}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
-                    },
-                    body: JSON.stringify({ phone: phone })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        otpSection.style.display = "block";
-                        submitButton.style.display = "block";
-                        
-                        // Start 2-minute countdown
-                        startCountdown(120);
+        let countdownInterval;
 
-                        // Show Resend button and hide Send button
-                        sendOtpButton.style.display = "none";
-                        resendOtpButton.style.display = "inline-block";
-                        resendOtpButton.classList.add("disabled");
-                    } else {
-                        alert("Error: " + data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error sending OTP:', error);
-                    alert("Something went wrong. Please try again.");
-                });
-            }
+        function sendOtp() {
+            const phone = document.getElementById("phone-input").value;
 
-            sendOtpButton.addEventListener("click", sendOtp);
+            fetch("{% url 'send_otp' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ phone: phone })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    otpSection.style.display = "block";
+                    submitButton.style.display = "block";
 
-            resendOtpButton.addEventListener("click", function () {
-                if (!resendOtpButton.classList.contains("disabled")) {
-                    sendOtp();
+                    // Start 2-minute countdown
+                    startCountdown(120);
+
+                    // Show Resend button and hide Send button
+                    sendOtpButton.style.display = "none";
+                    resendOtpButton.style.display = "inline-block";
+                    resendOtpButton.classList.add("disabled");
+                } else {
+                    alert("Error: " + data.error);
                 }
+            })
+            .catch(error => {
+                console.error("Error sending OTP:", error);
+                alert("Something went wrong. Please try again.");
             });
+        }
 
-            function startCountdown(seconds) {
-                let remainingTime = seconds;
+        sendOtpButton.addEventListener("click", sendOtp);
 
-                countdownTimer.style.display = "block";
+        resendOtpButton.addEventListener("click", function () {
+            if (!resendOtpButton.classList.contains("disabled")) {
+                sendOtp();
+            }
+        });
+
+        function startCountdown(seconds) {
+            let remainingTime = seconds;
+
+            countdownTimer.style.display = "block";
+            updateTimerDisplay(remainingTime);
+
+            countdownInterval = setInterval(() => {
+                remainingTime--;
                 updateTimerDisplay(remainingTime);
 
-                countdownInterval = setInterval(() => {
-                    remainingTime--;
-                    updateTimerDisplay(remainingTime);
+                if (remainingTime <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownTimer.style.display = "none";
+                    resendOtpButton.classList.remove("disabled");
+                }
+            }, 1000);
+        }
 
-                    if (remainingTime <= 0) {
-                        clearInterval(countdownInterval);
-                        countdownTimer.style.display = "none";
-                        resendOtpButton.classList.remove("disabled");
-                    }
-                }, 1000);
-            }
+        function updateTimerDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            countdownTimer.textContent = `You can resend OTP in ${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+    </script>
 
-            function updateTimerDisplay(seconds) {
-                const minutes = Math.floor(seconds / 60);
-                const remainingSeconds = seconds % 60;
-                countdownTimer.textContent = `You can resend OTP in ${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-            }
-        </script>
-    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
