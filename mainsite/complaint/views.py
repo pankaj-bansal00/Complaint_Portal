@@ -16,6 +16,7 @@ import random
 import string
 from django.utils.timezone import now
 from .utils import send_trackid
+
 # Helper function to generate a tracking ID
 def generate_tracking_id():
     """Generate a unique tracking ID."""
@@ -91,13 +92,3 @@ def complaint_success(request, track_id):
     return render(request, 'complaint_success.html', {'track_id': track_id})
 
 
-
-
-
-
-@csrf_exempt  # If you're not using CSRF protection
-def send_sms_view(request):
-    if request.method == 'POST':
-        return sendd_sms(request)
-    else:
-        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405) 

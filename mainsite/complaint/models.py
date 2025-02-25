@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from user.models import User
 import random
+from django.utils.timezone import now
 
 
 def generate_trackid():
@@ -57,3 +58,8 @@ class Complaint(models.Model):
 
     def __str__(self):
         return f"{self.complaint_title} ({self.track_id})"
+
+    def save(self, *args, **kwargs):
+        if not self.track_id:
+            self.track_id = generate_trackid()
+        super().save(*args, **kwargs)
