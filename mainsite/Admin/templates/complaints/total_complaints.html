@@ -31,9 +31,8 @@
                     <td>
                         <a href="{% url 'admin_complaint_detail' complaint.track_id %}">View</a> |
                         <a href="{% url 'update_complaint_status' complaint.track_id %}">Update</a>
-                        {% if user.is_superuser %}
-                        <a href="{% url 'delete_complaint' complaint.track_id %}">Delete</a>
-                        {% endif %}
+                    
+                      {% if request.user.is_superuser  %} | <a href="{% url 'delete_complaint' complaint.track_id %}">Delete</a>{% endif %}
                     </td>
                 </tr>
             {% endfor %}

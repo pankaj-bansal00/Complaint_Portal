@@ -39,7 +39,7 @@ def complaint_form(request):
         complaint_title = request.POST.get("complaint_title")
         complaint_description = request.POST.get("complaint_description")
         track_id = request.POST.get("track_id")  # Get the track_id from the form
-
+     
         # Save complaint
         complaint = Complaint.objects.create(
             user=user,

@@ -17,5 +17,6 @@
         <p><strong>Created At:</strong> {{ complaint.created_at }}</p>
 
         <a href="{% url 'update_complaint_status' complaint.track_id %}">Update Status</a>
+        <a href="{% url 'total_complaints' %}"> View All Complaints</a>
     </div>
 </body>

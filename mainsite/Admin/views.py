@@ -49,7 +49,7 @@ def admin_dashboard(request):
     return render(request, "admin_dashboard.html", context)
 
 def admin_login(request):
-    if request.user.is_superuser and request.user.is_staff:
+    if request.user.is_superuser :
         return redirect('admin_dashboard')
 
     if request.method == "POST":
@@ -111,10 +111,14 @@ def staff_login(request):
         try:
             # Get the staff member with the provided username
             staff = StaffProfile.objects.get(username=username)
+            print("staff",staff)
+            print("password",staff.password)
             if check_password(password, staff.password):  # Verify password
                 request.session["id"] = (
                     staff.id
-                )  # Store staff_id in the session
+                ) 
+                
+                 # Store staff_id in the session
                 messages.success(request, "Logged in successfully!")
                 print("Login successful, redirecting to dashboard...")
                 return redirect("complaint_dashboard")  # Redirect to seller dashboard
@@ -207,7 +211,7 @@ def complaint_dashboard(request):
 
 
 
-@user_passes_test(is_admin)
+
 def complaint_list(request):
     complaints = Complaint.objects.all().order_by('-created_at')
     return render(request, 'complaints/total_complaints.html', {'complaints': complaints})
@@ -241,7 +245,7 @@ def update_complaint_status(request, track_id):
 def delete_complaint(request, track_id):
     complaint = get_object_or_404(Complaint, track_id=track_id)
     complaint.delete()
-    return redirect('complaints/admin_complaint_list')
+    return redirect('total_complaints')
 
 @user_passes_test(is_admin)
 def resolve_complaint(request, track_id):

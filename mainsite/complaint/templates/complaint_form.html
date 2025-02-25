@@ -27,11 +27,16 @@
         
             <label>Account Number:</label>
             <div style="display: flex; align-items: center;">
-                <input type="password" id="account_number" name="account_number" required style="flex: 1; width: 540px; height: 48.8px;">
-                <button type="button" onclick="toggleVisibility()" style="margin-left: 5px; background: none; border: none; cursor: pointer;">
+                <input type="password" id="account_number" name="account_number" required 
+                       style="flex: 1; width: 540px; height: 48.8px;" 
+                       maxlength="16" oninput="validateAccountNumber(this)">
+                <button type="button" onclick="toggleVisibility()" 
+                        style="margin-left: 5px; background: none; border: none; cursor: pointer;">
                     👁️
                 </button>
             </div>
+            <p id="error_message" style="color: red; display: none;">Account number must be exactly 16 digits.</p>
+            
 
                 <label for="branch">Select Branch</label >
                 <select id="branch" name="branch" required>
@@ -65,8 +70,9 @@
                 </select>
         
                 <label for="debitCard">Debit Card Number</label>
-                <input type="number" id="debitCard" name="debitCard" >
-
+                <input type="text" id="debitCard" name="debitCard" maxlength="14" oninput="formatDebitCard(this)" required>
+                <p id="error_message" style="color: red; display: none;">Debit card number must be exactly 12 digits.</p>
+                
                 <label for="category">Category of Complaints</label>
                 <select id="category" name="category" required>
                     <option>NEFT/RTGS</option>
@@ -96,6 +102,22 @@
         </footer>
 
         <script>
+              function formatDebitCard(input) {
+        let value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+        value = value.substring(0, 12); // Limit to 12 digits
+
+        let formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1-'); // Add dash after every 4 digits
+
+        input.value = formattedValue; // Set formatted value
+
+        // Show error message if length is not exactly 12 digits
+        let errorMessage = document.getElementById("error_message");
+        if (value.length !== 12) {
+            errorMessage.style.display = "block";
+        } else {
+            errorMessage.style.display = "none";
+        }
+    }
             function toggleVisibility() {
     var input = document.getElementById("account_number");
     if (input.type === "password") {
@@ -104,6 +126,28 @@
         input.type = "password";
     }
 }
+function toggleVisibility() {
+        var input = document.getElementById("account_number");
+        if (input.type === "password") {
+            input.type = "text";
+        } else {
+            input.type = "password";
+        }
+    }
+
+    function validateAccountNumber(input) {
+        var errorMessage = document.getElementById("error_message");
+
+        // Remove non-numeric characters
+        input.value = input.value.replace(/\D/g, '');
+
+        // Show error if length is not exactly 16
+        if (input.value.length !== 16) {
+            errorMessage.style.display = "block";
+        } else {
+            errorMessage.style.display = "none";
+        }
+    }
         </script>
         
     </body>
