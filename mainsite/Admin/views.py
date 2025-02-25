@@ -117,14 +117,14 @@ def staff_login(request):
                 )  # Store staff_id in the session
                 messages.success(request, "Logged in successfully!")
                 print("Login successful, redirecting to dashboard...")
-                return redirect("/complaints/complaint_dashboard")  # Redirect to seller dashboard
+                return redirect("complaint_dashboard")  # Redirect to seller dashboard
             else:
                 print("Invalid credentials: Password mismatch")
-                messages.error(request, "Invalid credentials. Please try again.")
+                messages.error(request, "Invalid credentials    . Please try again.")
                 return redirect("staff_login")
         except StaffProfile.DoesNotExist:
             print("Seller with username not found:", username)
-            messages.error(request, "No seller account found with this username.")
+            messages.error(request, "No staff account found with this username.")
             return redirect("staff_login")
 
   return render(request, "staff_login.html")
@@ -232,7 +232,7 @@ def update_complaint_status(request, track_id):
         # Send email or notification to user (if needed)
         # You can integrate Django's email system here.
 
-        return redirect('complaints/admin_complaint_detail', track_id=track_id)
+        return redirect('admin_complaint_detail', track_id=track_id)
 
     return render(request, 'complaints/update_complaint_status.html', {'complaint': complaint})
 

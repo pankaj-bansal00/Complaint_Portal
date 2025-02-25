@@ -34,7 +34,6 @@ def complaint_form(request):
 
     if request.method == "POST":
         customer_type = request.POST.get("customer_type")
-        bank_name = request.POST.get("bank_name")
         account_number = request.POST.get("account_number")
         complaint_type = request.POST.get("complaint_type")
         complaint_title = request.POST.get("complaint_title")
@@ -45,7 +44,6 @@ def complaint_form(request):
         complaint = Complaint.objects.create(
             user=user,
             customer_type=customer_type,
-            bank_name=bank_name,
             account_number=account_number,
             complaint_type=complaint_type,
             complaint_title=complaint_title,

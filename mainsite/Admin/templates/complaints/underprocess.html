@@ -15,8 +15,7 @@
                         <th>Track ID</th>
                         <th>User</th>
                         <th>Complaint Title</th>
-                        <th>Bank</th>
-                        <th>Created At</th>
+                                               <th>Created At</th>
                         <th>Current Status</th>
                     </tr>
                 </thead>
@@ -26,8 +25,7 @@
                             <td>{{ complaint.track_id }}</td>
                             <td>{{ complaint.user }}</td>
                             <td>{{ complaint.complaint_title }}</td>
-                            <td>{{ complaint.bank_name }}</td>
-                            <td>{{ complaint.created_at }}</td>
+                                                        <td>{{ complaint.created_at }}</td>
                             <td><span class="badge bg-warning">Under Process</span></td>
                         </tr>
                     {% endfor %}

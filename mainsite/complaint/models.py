@@ -21,13 +21,6 @@ class Complaint(models.Model):
         ('new', 'New Customer'),
     ]
 
-    BANK_CHOICES = [
-        ('hdfc', 'HDFC Bank'),
-        ('sbi', 'State Bank of India'),
-        ('icici', 'ICICI Bank'),
-        ('axis', 'Axis Bank'),
-        ('pnb', 'Punjab National Bank'),
-    ]
 
     COMPLAINT_TYPE_CHOICES = [
         ('transaction', 'Transaction Issue'),
@@ -41,7 +34,6 @@ class Complaint(models.Model):
     track_id = models.CharField(max_length=20, unique=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     customer_type = models.CharField(max_length=10, choices=CUSTOMER_TYPE_CHOICES)
-    bank_name = models.CharField(max_length=50, choices=BANK_CHOICES)
     account_number = models.CharField(max_length=16)
     complaint_type = models.CharField(max_length=20, choices=COMPLAINT_TYPE_CHOICES)
     complaint_title = models.CharField(max_length=200)

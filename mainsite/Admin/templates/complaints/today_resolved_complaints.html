@@ -27,8 +27,7 @@
                 <tr>
                     <th>Track ID</th>
                     <th>User</th>
-                    <th>Bank</th>
-                    <th>Type</th>
+                                       <th>Type</th>
                     <th>Title</th>
                     <th>Resolved At</th>
                 </tr>
@@ -38,8 +37,7 @@
                     <tr>
                         <td>{{ complaint.track_id }}</td>
                         <td>{{ complaint.user.username }}</td>
-                        <td>{{ complaint.bank_name }}</td>
-                        <td>{{ complaint.complaint_type }}</td>
+                                                <td>{{ complaint.complaint_type }}</td>
                         <td>{{ complaint.complaint_title }}</td>
                         <td>{{ complaint.resolved_at|date:"Y-m-d H:i" }}</td>
                     </tr>
